@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 /**
- * Created by Asus on 26.05.2016.
+ * Created by Alex Tinekov on 26.05.2016.
  */
 public class StartAfterReboot extends BroadcastReceiver {
     @Override

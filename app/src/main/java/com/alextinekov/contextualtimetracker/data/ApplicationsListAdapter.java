@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by Asus on 03.06.2016.
+ * Created by Alex Tinekov on 03.06.2016.
  */
 public class ApplicationsListAdapter extends BaseAdapter {
     private List<RunnedApplicationInfo> appsInfo;

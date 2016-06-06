@@ -4,6 +4,8 @@ import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Binder;
@@ -16,6 +18,7 @@ import android.os.RemoteException;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.alextinekov.contextualtimetracker.BuildConfig;
 import com.alextinekov.contextualtimetracker.MainActivity;
 import com.alextinekov.contextualtimetracker.R;
 import com.alextinekov.contextualtimetracker.data.DBQueryWrapper;
@@ -25,7 +28,7 @@ import java.util.Calendar;
 import java.util.List;
 
 /**
- * Created by Asus on 25.05.2016.
+ * Created by Alex Tinekov on 25.05.2016.
  */
 public class TrackingService extends Service {
     private Thread workerThread;
@@ -33,8 +36,9 @@ public class TrackingService extends Service {
     private static final String TAG = TrackingService.class.getSimpleName();
     private static final int TRACK_PERIOD_IN_MILLIS = 5000;
     public static final int MSG_SAVE_STATE = 1;
+    private static final String SYSTEM_PACKAGE_NAME = "android";
     private RunnedApplicationInfo applicationsArray[];
-    private String currentApplication;
+    private long prevTime;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -106,19 +110,23 @@ public class TrackingService extends Service {
         List<ActivityManager.RunningAppProcessInfo> processes = activityManager.getRunningAppProcesses();
         ActivityManager.RunningAppProcessInfo info = processes.get(0);
         PackageManager pm = this.getPackageManager();
-        //Через pm можно иконку и логотип взять
         CharSequence label;
         try{
-            label = pm.getApplicationLabel(pm.getApplicationInfo(info.processName, PackageManager.GET_META_DATA));
+            if(!isForegroundProcess(info) || BuildConfig.APPLICATION_ID.equals(info.processName)) {
+                Log.i(TAG, "Not tracked package is found: " + info.processName);
+                return;
+            }
+            ApplicationInfo appInfo = pm.getApplicationInfo(info.processName, PackageManager.GET_META_DATA);
+            label = pm.getApplicationLabel(appInfo);
         }
         catch (PackageManager.NameNotFoundException e){
             label = info.processName;
         }
 
-        if(applicationsArray[0] != null && info.processName.equals(applicationsArray[0].packageName)){
+        if(applicationsArray[0] != null){
             applicationsArray[0].activeTime += TRACK_PERIOD_IN_MILLIS;
         }
-        else{
+        if(applicationsArray[0] == null || !info.processName.equals(applicationsArray[0].packageName)){
             RunnedApplicationInfo rai = new RunnedApplicationInfo();
             rai.activeTime = 0;
             rai.packageName = info.processName;
@@ -128,6 +136,10 @@ public class TrackingService extends Service {
         }
 
         Log.i(TAG, String.format("Top process %s. Time: %d", label, applicationsArray[0].activeTime));
+    }
+
+    private boolean isForegroundProcess(ActivityManager.RunningAppProcessInfo processInfo){
+        return processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
     }
 
     private Handler interactionHandler = new Handler(){
