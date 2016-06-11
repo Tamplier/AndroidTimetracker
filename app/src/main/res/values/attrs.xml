@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CircleElementView">
+        <attr name="strokeSize" format="dimension" />
+        <attr name="strokeColor" format="color" />
+        <attr name="mainColor" format="color" />
+        <attr name="tlElementIcon" format="integer" />
+    </declare-styleable>
+</resources>
