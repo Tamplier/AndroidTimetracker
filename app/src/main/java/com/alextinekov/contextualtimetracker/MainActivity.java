@@ -16,6 +16,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.alextinekov.contextualtimetracker.cviews.TimeLine;
+import com.alextinekov.contextualtimetracker.cviews.TimeLineAdapter;
 import com.alextinekov.contextualtimetracker.data.ApplicationsListAdapter;
 import com.alextinekov.contextualtimetracker.data.DBQueryWrapper;
 import com.alextinekov.contextualtimetracker.data.RunnedApplicationInfo;
@@ -26,7 +28,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     public static final int MSG_SAVE_DONE = 1;
     private Button stopServiceButton;
-    private ListView appList;
+    private TimeLine tLine;
     private ServiceConnection serviceConnection;
     private Messenger serviceMessenger;
 
@@ -38,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     private void init(){
         stopServiceButton = (Button)findViewById(R.id.stop_service);
-        appList = (ListView)findViewById(R.id.app_list);
+        tLine = (TimeLine) findViewById(R.id.time_line);
         stopServiceButton.setOnClickListener(this);
 
         startTrackingService();
@@ -96,6 +98,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SQLiteDatabase db = DBQueryWrapper.getInstance(this).openDatabase();
         List<RunnedApplicationInfo> apps = DBQueryWrapper.getAppInfo(db);
         DBQueryWrapper.getInstance(this).closeDatabase();
-        appList.setAdapter(new ApplicationsListAdapter(apps, getPackageManager()));
+        tLine.setAdapter(new TimeLineAdapter(this, apps, getPackageManager()));
     }
 }

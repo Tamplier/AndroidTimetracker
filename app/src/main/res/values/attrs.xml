@@ -6,4 +6,12 @@
         <attr name="mainColor" format="color" />
         <attr name="tlElementIcon" format="integer" />
     </declare-styleable>
+    <declare-styleable name="TimeLine">
+        <attr name="tl_strokeSize" format="dimension" />
+        <attr name="tl_strokeColor" format="color" />
+        <attr name="tl_mainColor" format="color" />
+        <attr name="tl_itemSize" format="dimension" />
+        <attr name="tl_distanceBetweenItems" format="dimension" />
+        <attr name="tl_offsetFromTheCenter" format="dimension" />
+    </declare-styleable>
 </resources>

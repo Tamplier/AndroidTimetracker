@@ -9,5 +9,5 @@ public class RunnedApplicationInfo {
     public String name;
     public long activeTime;
     public String packageName;
-    //public Drawable icon; //не оптимально хранить все в памяти
+    public Drawable icon;
 }

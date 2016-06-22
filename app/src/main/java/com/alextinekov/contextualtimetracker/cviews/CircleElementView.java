@@ -25,9 +25,9 @@ public class CircleElementView extends View {
     private int x, y;
     private int radius;
     private int iconLeft, iconTop, iconRight, iconBottom;
-    private float strokeSize;
-    private int strokeColor;
-    private int mainColor;
+    private float strokeSize = 5;
+    private int strokeColor = 0x7d7d7d;
+    private int mainColor = 0xffffff;
     private Drawable icon;
     public CircleElementView(Context context) {
         super(context);
@@ -61,9 +61,9 @@ public class CircleElementView extends View {
         init();
         TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.CircleElementView);
         try {
-            strokeSize = attributes.getDimension(R.styleable.CircleElementView_strokeSize, 0);
+            strokeSize = attributes.getDimension(R.styleable.CircleElementView_strokeSize, 5);
             strokeColor = attributes.getColor(R.styleable.CircleElementView_strokeColor, Color.BLACK);
-            mainColor = attributes.getColor(R.styleable.CircleElementView_mainColor, Color.BLACK);
+            mainColor = attributes.getColor(R.styleable.CircleElementView_mainColor, Color.WHITE);
             icon = attributes.getDrawable(R.styleable.CircleElementView_tlElementIcon);
         } finally {
             attributes.recycle();
@@ -97,30 +97,47 @@ public class CircleElementView extends View {
             x = (w - getPaddingLeft() - getPaddingRight())/2 + getPaddingLeft();
             y = getPaddingTop() + radius;
         }
-        //radius = Math.min(maxR1, maxR2);
         int maxIconSize = (int) ((radius - strokeSize) * 2 / Math.sqrt(2));
         iconLeft = getPaddingLeft() + (w - getPaddingLeft() - getPaddingRight() - maxIconSize) / 2;
         iconTop = getPaddingTop() + (h - getPaddingTop() - getPaddingBottom() - maxIconSize) / 2;
         iconRight = iconLeft + maxIconSize;
         iconBottom = iconTop + maxIconSize;
-        //icon = resize(icon, maxIconSize, maxIconSize);
-        //Log.d(TAG, "padding left: " + getPaddingLeft());
-
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         //this method's parameters are View.MeasureSpec values that tell you how big your view's parent wants your view to be, and whether that size is a hard maximum or just a suggestion.
-        //resolveSizeAndState -
         Log.d(TAG, "suggested minimum: " + getSuggestedMinimumWidth());
         int minWidth = getPaddingLeft() + getPaddingRight() + radius * 2;
         int minHeight = getPaddingTop() + getPaddingBottom() + radius * 2;
         setMeasuredDimension(resolveSizeAndState(minWidth, widthMeasureSpec, 1), resolveSizeAndState(minHeight, heightMeasureSpec, 1));
     }
 
-    private Drawable resize(Drawable image, int newWidth, int newHeight) {
-        Bitmap b = ((BitmapDrawable)image).getBitmap();
-        Bitmap bitmapResized = Bitmap.createScaledBitmap(b, 50, 50, false);
-        return new BitmapDrawable(getResources(), bitmapResized);
+
+    public void setIcon(Drawable icon){
+        this.icon = icon;
+        invalidate();
+        requestLayout();
+    }
+
+    public boolean isPositiveApplication(){
+        //Just for testing
+        return Math.random() < 0.5;
+    }
+
+    public void setStrokeSize(float strokeSize){
+        this.strokeSize = strokeSize;
+        invalidate();
+        requestLayout();
+    }
+    public void setStrokeColor(int strokeColor){
+        this.strokeColor = strokeColor;
+        invalidate();
+        requestLayout();
+    }
+    public void setMainColor(int mainColor){
+        this.mainColor = mainColor;
+        invalidate();
+        requestLayout();
     }
 }

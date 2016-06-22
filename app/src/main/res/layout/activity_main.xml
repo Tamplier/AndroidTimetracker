@@ -26,8 +26,18 @@
         custom:mainColor="@color/white"
         custom:tlElementIcon="@mipmap/ic_launcher"
         />
-    <ListView
-        android:id="@+id/app_list"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+        <com.alextinekov.contextualtimetracker.cviews.TimeLine
+            android:id="@+id/time_line"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            custom:tl_strokeSize="5dp"
+            custom:tl_strokeColor="@color/timeline_stroke_color"
+            custom:tl_mainColor="@color/white"
+            custom:tl_itemSize="80dp"
+            custom:tl_distanceBetweenItems="100dp"
+            custom:tl_offsetFromTheCenter="80dp" />
+    </ScrollView>
 </LinearLayout>
