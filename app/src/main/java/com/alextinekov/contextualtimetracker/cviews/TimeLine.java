@@ -19,10 +19,13 @@ import com.alextinekov.contextualtimetracker.R;
 public class TimeLine extends ViewGroup {
     private static final String TAG = TimeLine.class.getSimpleName();
     private TimeLineAdapter adapter;
+    private int yPositions[];
+    private int xPositions[];
     private float strokeSize;
     private int strokeColor;
     private int mainColor;
     private float itemSize;
+    private float smallCircleSize;
     private float distanceBetweenItems;
     private float offsetFromCenter;
     private int layoutWidth;
@@ -57,10 +60,12 @@ public class TimeLine extends ViewGroup {
         itemSize = attributes.getDimension(R.styleable.TimeLine_tl_itemSize, 60);
         distanceBetweenItems = attributes.getDimension(R.styleable.TimeLine_tl_distanceBetweenItems, 80);
         offsetFromCenter = attributes.getDimension(R.styleable.TimeLine_tl_offsetFromTheCenter, 60);
+        smallCircleSize = attributes.getDimension(R.styleable.TimeLine_tl_smallCircleSize, 10);
 
         Log.d(TAG, "item size: " + itemSize);
         lp = new LayoutParams((int) itemSize, (int)itemSize);
         paint = new Paint();
+        paint.setFlags(Paint.ANTI_ALIAS_FLAG);
         setBackgroundColor(0x00000000);
     }
 
@@ -73,15 +78,30 @@ public class TimeLine extends ViewGroup {
         layoutWidth = r - l;
         int center = (layoutWidth - getPaddingLeft() - getPaddingRight())/2 + getPaddingLeft();
 
+        if(yPositions == null || yPositions.length != count) {
+            yPositions = new int[count];
+            xPositions = new int[count];
+        }
+
+
         for(int i = 0; i < count; i++){
-            View child = getChildAt(i);
+            CircleElementView child = (CircleElementView) getChildAt(i);
             int width = child.getMeasuredWidth();
             int height = child.getMeasuredHeight();
-            int left = center - width/2;
+            int left = center;
+            if(child.isPositiveApplication()){
+                left = left + (int)offsetFromCenter;
+            }
+            else {
+                left = left - width - (int) offsetFromCenter;
+            }
+
             int right = left + width;
             int bottom = top + height;
             //тут l,t,r,b относительно текущего layout
             Log.d(TAG, "l, t, r, b : " + left + ", " + top + ", " + right + "," + bottom);
+            yPositions[i] = top + height/2;
+            xPositions[i] = left + width/2;
             child.layout(left,top,right,bottom);
             top += height + distanceBetweenItems;
         }
@@ -118,9 +138,20 @@ public class TimeLine extends ViewGroup {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        //Cкорее всего, сначала рисуем бэкграунд, затем вызываем super.onDraw для отрисовки child компонентов
         paint.setColor(Color.BLACK);
-        canvas.drawRect(0, 0, getWidth()/2, getHeight(), paint);
+        int hCenter = getWidth()/2;
+        canvas.drawRect(0, 0, hCenter, getHeight(), paint);
+        paint.setColor(strokeColor);
+        paint.setStrokeWidth(strokeSize);
+        canvas.drawLine(hCenter, 0, hCenter, getHeight(), paint);
+        for(int i = 0; i < yPositions.length; i++){
+            paint.setColor(strokeColor);
+            canvas.drawLine(hCenter, yPositions[i], xPositions[i], yPositions[i], paint);
+            canvas.drawCircle(hCenter, yPositions[i], smallCircleSize, paint);
+            paint.setColor(mainColor);
+            canvas.drawCircle(hCenter, yPositions[i], smallCircleSize - strokeSize, paint);
+        }
+        //Don't forget to draw children
         super.onDraw(canvas);
     }
 

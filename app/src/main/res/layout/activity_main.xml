@@ -5,9 +5,6 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.alextinekov.contextualtimetracker.MainActivity">
 
@@ -26,11 +23,12 @@
             android:layout_height="wrap_content"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
-            custom:tl_strokeSize="8dp"
+            custom:tl_strokeSize="6dp"
             custom:tl_strokeColor="@color/timeline_stroke_color"
             custom:tl_mainColor="@color/white"
             custom:tl_itemSize="80dp"
             custom:tl_distanceBetweenItems="10dp"
-            custom:tl_offsetFromTheCenter="80dp" />
+            custom:tl_smallCircleSize="10dp"
+            custom:tl_offsetFromTheCenter="30dp" />
     </ScrollView>
 </LinearLayout>

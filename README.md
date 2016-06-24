@@ -12,3 +12,7 @@ Basic elements:
 4. DBQueryWrapper for thread-safe interaction with db and for wrapping queries.
 
 5. Messengers for interaction between Activity and Service.
+
+Currently I'm working on custom component - TimeLine. Current appearance here:
+
+![alt text](https://github.com/Tamplier/AndroidTimetracker/tree/master/images/TL_Example.png "TimeLine")

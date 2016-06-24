@@ -13,5 +13,6 @@
         <attr name="tl_itemSize" format="dimension" />
         <attr name="tl_distanceBetweenItems" format="dimension" />
         <attr name="tl_offsetFromTheCenter" format="dimension" />
+        <attr name="tl_smallCircleSize" format="dimension" />
     </declare-styleable>
 </resources>
