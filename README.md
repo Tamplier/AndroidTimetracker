@@ -15,4 +15,4 @@ Basic elements:
 
 Currently I'm working on custom component - TimeLine. Current appearance here:
 
-![alt text](https://github.com/Tamplier/AndroidTimetracker/tree/master/images/TL_Example.png "TimeLine")
+![alt text](https://github.com/Tamplier/AndroidTimetracker/raw/master/images/TL_Example.png "TimeLine")
