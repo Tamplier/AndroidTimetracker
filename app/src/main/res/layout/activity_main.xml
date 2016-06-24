@@ -17,15 +17,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/stop_service"
         android:text="@string/stop_service"/>
-    <com.alextinekov.contextualtimetracker.cviews.CircleElementView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_gravity="center_horizontal"
-        custom:strokeSize="8dp"
-        custom:strokeColor="@color/timeline_stroke_color"
-        custom:mainColor="@color/white"
-        custom:tlElementIcon="@mipmap/ic_launcher"
-        />
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -33,11 +24,13 @@
             android:id="@+id/time_line"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            custom:tl_strokeSize="5dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            custom:tl_strokeSize="8dp"
             custom:tl_strokeColor="@color/timeline_stroke_color"
             custom:tl_mainColor="@color/white"
             custom:tl_itemSize="80dp"
-            custom:tl_distanceBetweenItems="100dp"
+            custom:tl_distanceBetweenItems="10dp"
             custom:tl_offsetFromTheCenter="80dp" />
     </ScrollView>
 </LinearLayout>

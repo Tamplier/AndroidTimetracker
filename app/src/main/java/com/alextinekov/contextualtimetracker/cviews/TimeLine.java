@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -24,6 +25,8 @@ public class TimeLine extends ViewGroup {
     private float itemSize;
     private float distanceBetweenItems;
     private float offsetFromCenter;
+    private int layoutWidth;
+    private Paint paint;
     LayoutParams lp;
 
     public TimeLine(Context context) {
@@ -57,6 +60,8 @@ public class TimeLine extends ViewGroup {
 
         Log.d(TAG, "item size: " + itemSize);
         lp = new LayoutParams((int) itemSize, (int)itemSize);
+        paint = new Paint();
+        setBackgroundColor(0x00000000);
     }
 
     @Override
@@ -65,7 +70,7 @@ public class TimeLine extends ViewGroup {
         Log.d(TAG, "layout top: " + t);
         int count = getChildCount();
         int top = getPaddingTop();
-        int layoutWidth = r - l;
+        layoutWidth = r - l;
         int center = (layoutWidth - getPaddingLeft() - getPaddingRight())/2 + getPaddingLeft();
 
         for(int i = 0; i < count; i++){
@@ -78,7 +83,7 @@ public class TimeLine extends ViewGroup {
             //тут l,t,r,b относительно текущего layout
             Log.d(TAG, "l, t, r, b : " + left + ", " + top + ", " + right + "," + bottom);
             child.layout(left,top,right,bottom);
-            top += distanceBetweenItems;
+            top += height + distanceBetweenItems;
         }
     }
 
@@ -114,6 +119,8 @@ public class TimeLine extends ViewGroup {
     @Override
     protected void onDraw(Canvas canvas) {
         //Cкорее всего, сначала рисуем бэкграунд, затем вызываем super.onDraw для отрисовки child компонентов
+        paint.setColor(Color.BLACK);
+        canvas.drawRect(0, 0, getWidth()/2, getHeight(), paint);
         super.onDraw(canvas);
     }
 
